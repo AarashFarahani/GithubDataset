@@ -4,6 +4,7 @@ import com.hackerrank.github.model.Actor;
 import com.hackerrank.github.model.Event;
 import com.hackerrank.github.repository.ActorRepository;
 import com.hackerrank.github.repository.EventRepository;
+import com.hackerrank.github.repository.RepoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +16,16 @@ import java.util.List;
 public class GithubApiRestController {
     @Autowired private ActorRepository actorRepository;
     @Autowired private EventRepository eventRepository;
+    @Autowired private RepoRepository repoRepository;
 
     @PostMapping("/events")
     public ResponseEntity addEvent(@RequestBody Event event) {
         try {
+            if(this.actorRepository.exists(event.getActor().getId()) == false)
+                this.actorRepository.save(event.getActor());
+            if(this.repoRepository.exists(event.getRepo().getId()) == false)
+                this.repoRepository.save(event.getRepo());
+
             this.eventRepository.save(event);
             return new ResponseEntity(HttpStatus.CREATED);
         } catch (Exception ex) {
