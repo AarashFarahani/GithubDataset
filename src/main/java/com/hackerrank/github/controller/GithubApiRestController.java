@@ -19,10 +19,14 @@ public class GithubApiRestController {
     @PostMapping("/events")
     public ResponseEntity addEvent(@RequestBody Event event) {
         try {
+            if (this.eventRepository.exists(event.getId()))
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
             this.eventRepository.save(event);
             return new ResponseEntity(HttpStatus.CREATED);
         } catch (Exception ex) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            ex.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -61,7 +65,7 @@ public class GithubApiRestController {
 
     @GetMapping("/actors")
     public List<Actor> allActors() {
-        return this.actorRepository.findAll();
+        return this.actorRepository.findAllBaseOnEventsCount();
     }
 
     @DeleteMapping("/erase")

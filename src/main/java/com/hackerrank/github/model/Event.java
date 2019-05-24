@@ -18,11 +18,11 @@ public class Event {
     @Column(name = "TYPE")
     private String type;
 
-    @JoinColumn(name = "ACTOR_ID", unique = true)
+    @JoinColumn(name = "ACTOR_ID")
     @OneToOne(cascade = CascadeType.ALL)
     private Actor actor;
 
-    @JoinColumn(name = "REPO_ID", unique = true)
+    @JoinColumn(name = "REPO_ID")
     @OneToOne(cascade = CascadeType.ALL)
     private Repo repo;
 
