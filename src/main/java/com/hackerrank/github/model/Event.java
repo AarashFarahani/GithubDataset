@@ -19,11 +19,11 @@ public class Event {
     private String type;
 
     @JoinColumn(name = "FK_ACTOR", insertable = false)
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Actor actor;
 
     @JoinColumn(name = "FK_REPO", insertable = false)
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Repo repo;
 
     @JsonSerialize(using = CustomTimeStampSerializer.class)
