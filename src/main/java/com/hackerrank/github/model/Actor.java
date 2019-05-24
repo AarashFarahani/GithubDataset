@@ -1,5 +1,7 @@
 package com.hackerrank.github.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 
 @Entity
@@ -7,10 +9,10 @@ import javax.persistence.*;
 public class Actor {
     @Id
     @Column(name = "ACTOR_ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "LOGIN")
     private String login;
+    @JsonProperty("avatar_url")
     @Column(name = "AVATAR")
     private String avatar;
 

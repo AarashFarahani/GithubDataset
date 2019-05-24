@@ -7,7 +7,6 @@ import javax.persistence.*;
 public class Repo {
     @Id
     @Column(name = "REPO_ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "NAME")
     private String name;
