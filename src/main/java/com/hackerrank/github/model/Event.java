@@ -1,5 +1,11 @@
 package com.hackerrank.github.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.hackerrank.github.utils.CustomTimeStampDeserializer;
+import com.hackerrank.github.utils.CustomTimeStampSerializer;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -8,7 +14,6 @@ import java.sql.Timestamp;
 public class Event {
     @Id
     @Column(name = "EVENT_ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "TYPE")
     private String type;
@@ -20,6 +25,10 @@ public class Event {
     @JoinColumn(name = "REPO_ID", unique = true)
     @OneToOne(cascade = CascadeType.ALL)
     private Repo repo;
+
+    @JsonSerialize(using = CustomTimeStampSerializer.class)
+    @JsonDeserialize(using = CustomTimeStampDeserializer.class)
+    @JsonProperty("created_at")
     @Column(name = "CREATEDAT")
     private Timestamp createdAt;
 
