@@ -19,9 +19,6 @@ public class GithubApiRestController {
     @PostMapping("/events")
     public ResponseEntity addEvent(@RequestBody Event event) {
         try {
-            if (this.eventRepository.exists(event.getId()))
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
             this.eventRepository.save(event);
             return new ResponseEntity(HttpStatus.CREATED);
         } catch (Exception ex) {
