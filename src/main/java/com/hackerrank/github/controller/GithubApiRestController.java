@@ -21,11 +21,6 @@ public class GithubApiRestController {
     @PostMapping("/events")
     public ResponseEntity addEvent(@RequestBody Event event) {
         try {
-            if(this.actorRepository.exists(event.getActor().getId()) == false)
-                this.actorRepository.save(event.getActor());
-            if(this.repoRepository.exists(event.getRepo().getId()) == false)
-                this.repoRepository.save(event.getRepo());
-
             this.eventRepository.save(event);
             return new ResponseEntity(HttpStatus.CREATED);
         } catch (Exception ex) {
@@ -36,7 +31,7 @@ public class GithubApiRestController {
 
     @GetMapping("/events/actors/{actorId}")
     public ResponseEntity<List<Event>> getEvents(@PathVariable Long actorId) {
-        List<Event> result = this.eventRepository.findByActor_IdOrderByIdAsc(actorId);
+        List<Event> result = this.eventRepository.findByActorIdOrderByIdAsc(actorId);
         if(result == null || result.isEmpty())
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
@@ -75,6 +70,8 @@ public class GithubApiRestController {
     @DeleteMapping("/erase")
     public ResponseEntity erase() {
         this.eventRepository.deleteAll();
+        this.actorRepository.deleteAll();
+        this.repoRepository.deleteAll();
         return new ResponseEntity(HttpStatus.OK);
     }
 }

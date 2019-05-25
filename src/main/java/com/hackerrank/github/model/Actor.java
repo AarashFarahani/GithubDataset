@@ -18,8 +18,8 @@ public class Actor {
     @Column(name = "AVATAR")
     private String avatar;
 
-    @OneToMany(mappedBy="actor", cascade = CascadeType.ALL)
-    Set<Event> event = new HashSet<>();
+//    @OneToMany(mappedBy="actor", cascade = CascadeType.ALL)
+//    Set<Event> event = new HashSet<>();
 
     public Actor() {
     }

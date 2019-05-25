@@ -18,11 +18,11 @@ public class Event {
     @Column(name = "TYPE")
     private String type;
 
-    @JoinColumn(name = "FK_ACTOR", insertable = false)
+    @JoinColumn(name = "FK_ACTOR", insertable = true)
     @ManyToOne(cascade = CascadeType.ALL)
     private Actor actor;
 
-    @JoinColumn(name = "FK_REPO", insertable = false)
+    @JoinColumn(name = "FK_REPO", insertable = true)
     @ManyToOne(cascade = CascadeType.ALL)
     private Repo repo;
 
