@@ -15,4 +15,13 @@ public interface ActorRepository extends JpaRepository<Actor, Long> {
             " A.LOGIN ASC",
             nativeQuery = true)
     List<Actor> findAllBaseOnEventsCount();
+
+    @Query(value = "WITH GRPS AS (  \n" +
+            "  SELECT CREATEDAT, ROW_NUMBER() OVER (ORDER BY CREATEDAT) RN ,  \n" +
+            "         CREATEDAT - ROW_NUMBER() OVER (ORDER BY CREATEDAT) GRP_DATE  \n" +
+            "  FROM   EVENT  \n" +
+            ")  \n" +
+            "  SELECT * FROM ACTOR",
+            nativeQuery = true)
+    List<Actor> findAllBasedOnStreak();
 }
