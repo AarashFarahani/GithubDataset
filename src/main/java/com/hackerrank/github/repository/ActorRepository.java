@@ -15,4 +15,42 @@ public interface ActorRepository extends JpaRepository<Actor, Long> {
             " A.LOGIN ASC",
             nativeQuery = true)
     List<Actor> findAllBaseOnEventsCount();
+
+    @Query(value = "WITH DATES\n" +
+            "     AS (  SELECT FK_ACTOR, TO_DATE (CREATEDAT, 'YYYY-MM-DD') DATE\n" +
+            "             FROM EVENT\n" +
+            "         GROUP BY FK_ACTOR, DATE),\n" +
+            "     GROUPS\n" +
+            "     AS (SELECT ROW_NUMBER () OVER (ORDER BY DATE) AS RN,\n" +
+            "                DATEADD (DAY, -ROW_NUMBER () OVER (ORDER BY DATE), DATE)\n" +
+            "                   AS GRP,\n" +
+            "                DATE,\n" +
+            "                FK_ACTOR\n" +
+            "           FROM DATES),\n" +
+            "     STREAK\n" +
+            "     AS (  SELECT COUNT (*) AS CONSECUTIVEDATES,\n" +
+            "                  MAX (DATE) AS MAXDATE,\n" +
+            "                  FK_ACTOR\n" +
+            "             FROM GROUPS\n" +
+            "         GROUP BY GRP\n" +
+            "         ORDER BY 1 DESC, 2 DESC),\n" +
+            "     ACTORS\n" +
+            "     AS (  SELECT A.*\n" +
+            "             FROM ACTOR A\n" +
+            "                  JOIN\n" +
+            "                  (  SELECT MAX (E.CREATEDAT) CREATEDAT,\n" +
+            "                            MIN (E.FK_ACTOR) FK_ACTOR\n" +
+            "                       FROM EVENT E\n" +
+            "                   GROUP BY E.FK_ACTOR) IE\n" +
+            "                     ON IE.FK_ACTOR = A.ACTOR_ID\n" +
+            "                  JOIN\n" +
+            "                  (  SELECT MAX (S.CONSECUTIVEDATES) CONSECUTIVEDATES, S.FK_ACTOR\n" +
+            "                       FROM STREAK S\n" +
+            "                   GROUP BY S.FK_ACTOR) JS\n" +
+            "                     ON JS.FK_ACTOR = A.ACTOR_ID\n" +
+            "         ORDER BY JS.CONSECUTIVEDATES DESC, IE.CREATEDAT DESC, A.LOGIN)\n" +
+            "SELECT *\n" +
+            "  FROM ACTORS",
+            nativeQuery = true)
+    List<Actor> findAllBasedOnStreak();
 }

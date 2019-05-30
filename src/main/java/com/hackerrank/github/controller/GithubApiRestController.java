@@ -40,7 +40,7 @@ public class GithubApiRestController {
 
     @GetMapping("/actors/streak")
     public List<Actor> getActors() {
-        return this.actorRepository.findAll();
+        return this.actorRepository.findAllBasedOnStreak();
     }
 
     @PutMapping("/actors")
