@@ -3,8 +3,6 @@ package com.hackerrank.github.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "ACTOR")
@@ -17,9 +15,6 @@ public class Actor {
     @JsonProperty("avatar_url")
     @Column(name = "AVATAR")
     private String avatar;
-
-//    @OneToMany(mappedBy="actor", cascade = CascadeType.ALL)
-//    Set<Event> event = new HashSet<>();
 
     public Actor() {
     }
