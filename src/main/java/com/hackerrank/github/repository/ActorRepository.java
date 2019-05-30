@@ -29,7 +29,7 @@ public interface ActorRepository extends JpaRepository<Actor, Long> {
             "     STREAK\n" +
             "     AS (  SELECT COUNT (*) AS CONSECUTIVEDATES,\n" +
             "                  MAX (CREATEDAT) AS MAXDATE,\n" +
-            "                  FK_ACTOR\n" +
+            "                  MAX(FK_ACTOR) FK_ACTOR\n" +
             "             FROM GROUPS\n" +
             "         GROUP BY GRP\n" +
             "         ORDER BY 1 DESC, 2 DESC),\n" +
