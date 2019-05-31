@@ -17,12 +17,12 @@ public interface ActorRepository extends JpaRepository<Actor, Long> {
     List<Actor> findAllBaseOnEventsCount();
 
     @Query(value = "WITH DATES\n" +
-            "     AS (  SELECT FK_ACTOR, TO_DATE (CREATEDAT, 'YYYY-MM-DD') CREATEDAT\n" +
+            "     AS (  SELECT FK_ACTOR, MAX(TO_DATE (CREATEDAT, 'YYYY-MM-DD')) CREATEDAT\n" +
             "             FROM EVENT\n" +
-            "         GROUP BY FK_ACTOR, CREATEDAT),\n" +
+            "         GROUP BY FK_ACTOR),\n" +
             "     GROUPS\n" +
-            "     AS (SELECT ROW_NUMBER () OVER (ORDER BY CREATEDAT) AS RN,\n" +
-            "                DATEADD (DAY, -ROW_NUMBER () OVER (ORDER BY CREATEDAT), CREATEDAT)\n" +
+            "     AS (SELECT ROW_NUMBER () OVER (PARTITION BY FK_ACTOR ORDER BY CREATEDAT) AS RN,\n" +
+            "                DATEADD (DAY, -ROW_NUMBER () OVER (PARTITION BY FK_ACTOR ORDER BY CREATEDAT), CREATEDAT)\n" +
             "                   AS GRP,\n" +
             "                CREATEDAT, FK_ACTOR\n" +
             "           FROM DATES),\n" +
