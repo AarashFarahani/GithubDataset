@@ -20,8 +20,7 @@ public interface ActorRepository extends JpaRepository<Actor, Long> {
             "     AS (  SELECT FK_ACTOR, TO_DATE (CREATEDAT, 'YYYY-MM-DD') CREATEDAT\n" +
             "             FROM EVENT),\n" +
             "     GROUPS\n" +
-            "     AS (SELECT ROW_NUMBER () OVER (PARTITION BY FK_ACTOR ORDER BY CREATEDAT) AS RN,\n" +
-            "                DATEADD (DAY, -ROW_NUMBER () OVER (PARTITION BY FK_ACTOR ORDER BY CREATEDAT), CREATEDAT)\n" +
+            "     AS (SELECT DATEADD (DAY, -ROW_NUMBER () OVER (PARTITION BY FK_ACTOR ORDER BY CREATEDAT), CREATEDAT)\n" +
             "                   AS GRP,\n" +
             "                CREATEDAT, FK_ACTOR\n" +
             "           FROM DATES),\n" +
