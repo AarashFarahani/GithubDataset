@@ -15,5 +15,4 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     @Query(value = "SELECT * FROM EVENT A WHERE FK_ACTOR = :actorId ORDER BY EVENT_ID",
             nativeQuery = true)
     List<Event> findByActorIdOrderByIdAsc(@Param("actorId") Long actorId);
-//    List<Event> findByActor_IdOrderByIdAsc(Long actorId);
 }
